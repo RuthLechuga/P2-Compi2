@@ -1,0 +1,86 @@
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #08088A;">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+      <img src="../../../assets/coding.svg" width="30" height="30" class="d-inline-block align-top" alt="">
+      <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+        <li class="nav-item active mr-5">
+          <a class="nav-link" style="color: white;" href="#">Lenguaje J#<span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item mr-5" ngbDropdown>
+            <a class="nav-link" style="cursor: pointer; color: white;" ngbDropdownToggle id="navbarDropdown1" role="button">
+              Archivo
+            </a>
+            <div ngbDropdownMenu aria-labelledby="navbarDropdown1" class="dropdown-menu">
+              <div class="custom-file">
+                <label class="custom-file-label" for="customFile" style="background-color:#08088A; color: blanchedalmond;">Abrir</label>
+                <input #file type="file" class="custom-file-input" id="customFile" (change)="abrir(file.files)">
+              </div>
+              <a ngbDropdownItem href="#" (click)="addTab()">Nueva pestaña</a>
+              <a ngbDropdownItem href="#" (click)="guardar()">Guardar</a>
+              <a ngbDropdownItem href="#" (click)="guardarComo()">Guardar Como</a>
+            </div>
+        </li>
+        <li class="nav-item mr-5">
+            <a (click)="compilar()" class="nav-link" style="color: white;" href="#">Compilar<span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item mr-5">
+            <a (click)="ejecutar()" class="nav-link" style="color: white;" href="#">Ejecutar<span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item mr-5">
+            <a (click)="optimizar()" class="nav-link" style="color: white;" href="#">Optimizar<span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item" ngbDropdown>
+            <a class="nav-link" style="cursor: pointer; color: white" ngbDropdownToggle id="navbarDropdown2" role="button">
+              Reportes
+            </a>
+            <div ngbDropdownMenu aria-labelledby="navbarDropdown2" class="dropdown-menu dropdown-menu-right">
+              <a ngbDropdownItem href="#" (click)="reporteTS()">Tabla De Simbolos</a>
+              <a ngbDropdownItem href="#" (click)="reporteAST()">AST</a>
+              <a ngbDropdownItem href="#" (click)="reporteOptimizacion()">Optimizacion</a>
+            </div>
+        </li>
+
+      </ul>
+    </div>
+</nav>
+<ul ngbNav #nav="ngbNav" class="nav-tabs">
+  <li ngbNavItem *ngFor="let tab of tabs" (click)="cambioTab($event)">
+    <a ngbNavLink>{{tab.nombre}}</a>
+    <ng-template ngbNavContent>
+      <angular-editor [(ngModel)]="entrada" [config]="editorConfig"></angular-editor>
+    </ng-template>
+  </li>
+</ul>
+
+<div [ngbNavOutlet]="nav"></div>
+<p>Linea: {{linea}}, Columna: {{columna}}</p>
+
+<ul ngbNav #nav="ngbNav" class="nav-tabs">
+  <li ngbNavItem>
+    <a ngbNavLink>Consola</a>
+    <ng-template ngbNavContent>
+    </ng-template>
+  </li>
+  <li ngbNavItem>
+    <a ngbNavLink>Errores</a>
+    <ng-template ngbNavContent>
+    </ng-template>
+  </li>
+  <li ngbNavItem>
+    <a ngbNavLink>Heap</a>
+    <ng-template ngbNavContent>
+    </ng-template>
+  </li>
+  <li ngbNavItem>
+    <a ngbNavLink>Stack</a>
+    <ng-template ngbNavContent>
+    </ng-template>
+  </li>
+</ul>
