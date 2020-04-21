@@ -1,7 +1,8 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { AngularEditorConfig, AngularEditorComponent } from '@kolkov/angular-editor';
+import { Component, OnInit } from '@angular/core';
+import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { tabs } from 'src/app/models/tabs';
-import { saveAs, save } from 'file-saver';
+import { saveAs } from 'file-saver';
+//import { parser } from 'src/app/analizadores/gramatica';
 
 @Component({
   selector: 'app-ide',
@@ -103,8 +104,12 @@ export class IDEComponent implements OnInit {
     saveAs(file, 'entrada.txt')
   }
 
-  compilar(){
-
+  compilar(){ 
+    var parser = require('src/app/analizadores/gramatica');
+    let entrada = this.entrada.replace(new RegExp('<div>','g'),'\n');
+    entrada = entrada.replace(new RegExp('</div>','g'),'');
+    console.log(entrada)
+    parser.parse(entrada);
   }
 
   ejecutar(){
@@ -112,7 +117,6 @@ export class IDEComponent implements OnInit {
   }
 
   optimizar(){
-    console.log('optimizar');
   }
 
   reporteTS(){
