@@ -16,19 +16,19 @@ export class Funcion extends Node{
     constructor(visibilidad: Visibilidad, tipo: Tipo, nombre: String, parametros: Array<Declaracion>, instrucciones: Array<Node>, fila: number, columna: number) {
         super(tipo, fila, columna);
         this.visibilidad = visibilidad;
-        this.nombre = this.getNombreFuncion(nombre, parametros);
+        this.nombre = nombre;
         this.parametros = parametros;
         this.instrucciones = instrucciones;
+        this.parametros.map(m => {
+            this.nombre += '_' + m.tipo.toString();
+        });
     }
 
     analizar(tabla: Tabla, arbol: Arbol) : any{
-        // Agregar los parametros a la TS
         this.parametros.map(m => {
             m.analizar(tabla, arbol);
         });
 
-        // validar que todas las instrucciones son validas semanticamente
-        console.log(this.instrucciones)
         this.instrucciones.map(m => {
             m.analizar(tabla, arbol);
         });
@@ -40,7 +40,6 @@ export class Funcion extends Node{
         tabla.ambito = true;
         let codigo = `proc ${this.nombre} begin\n`;
         this.instrucciones.map(m => {
-            codigo += "#pruebita -> \n";
             codigo += m.getC3D(tabla, arbol);
         });
 
@@ -53,18 +52,6 @@ export class Funcion extends Node{
         tabla.sizeActual.pop();
         tabla.tempStorage = [];
         return codigo;
-    }
-
-    getNombreFuncion(nombre: String, parametros: Array<Node>) {
-        // El nombre de la funcion va a estar dado por el nombre + el tipo de cada parametro
-        // Esto con el fin de diferenciar mas facilmente las funciones y poder crear sobrecarga
-        const tipos_parametros : Array<String> = [];
-        parametros.map(m => {
-            tipos_parametros.push(m.tipo.toString());
-        });
-        return tipos_parametros.length == 0 ?
-            `${nombre}` :
-            `${nombre}_${tipos_parametros.join('_')}`;
     }
 
     getArbol(arbol: String): String {

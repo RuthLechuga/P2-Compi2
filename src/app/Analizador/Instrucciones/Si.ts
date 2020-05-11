@@ -16,7 +16,7 @@ export class Si extends Node {
         this.fila = fila;
         this.columna = columna;
     }
-    // (a < b)
+    
     analizar(tabla: Tabla, arbol: Arbol) : any{
         let cond = this.condicion.analizar(tabla, arbol);
         if (cond.constructor.name === 'Error') {
@@ -50,7 +50,6 @@ export class Si extends Node {
         let etiquetaV = tabla.getEtiqueta();
         let etiquetaF = tabla.getEtiqueta();
         codigo += `if(${temp} == 1) goto ${etiquetaV}\n`;
-        tabla.QuitarTemporal(temp);
         this.listaElse.map(m => {
             codigo += m.getC3D(tabla, arbol);
         });

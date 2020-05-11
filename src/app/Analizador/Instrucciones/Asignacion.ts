@@ -53,7 +53,6 @@ export class Asignacion extends Node{
             codigo += `${temp2} = ${temp2} + ${variable.posicion};\n`;
             codigo += `stack[${temp2}] = ${temp};\n`;
         }
-        tabla.QuitarTemporal(tabla.getTemporalActual());
         return codigo;
     }
 

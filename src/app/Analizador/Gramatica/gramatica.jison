@@ -85,6 +85,7 @@ charliteral (\'({escape}|{acceptedquote})\')
 "void"                return 'void'
 "public"              return 'public'
 "private"             return 'private'
+"return"              return 'return'
 
 {archivo}             return 'archivo'
 {identificador}       return 'identificador'
@@ -166,7 +167,7 @@ LISTA_PARAMETROS : LISTA_PARAMETROS ',' PARAMETRO       {
         | PARAMETRO                                     { $$ = [$1]; }
         ;
 
-PARAMETRO : TIPO identificador          { $$ = new Declaracion($1, $2, null, this._$.first_line, this._$.first_column); }
+PARAMETRO : TIPO identificador          { $$ = new Declaracion($1, $2, null, false, false, this._$.first_line, this._$.first_column); }
         ;
 
 //-------------------------------------------------DECLARACIONES-------------------------------------------------//
@@ -222,16 +223,33 @@ INSTRUCCIONES : INSTRUCCIONES INSTRUCCION   { $$ = $1; Array.prototype.push.appl
               | INSTRUCCION                 { $$ = $1; }
               ;
 
-INSTRUCCION : PRINT                         { $$ = [$1];}
-            | DECLARACION PUNTOCOMA         { $$ = $1;}
-            | DECLARACION                   { $$ = $1;}
+INSTRUCCION : PRINT                         { $$ = [$1]; }
+            | DECLARACION PUNTOCOMA         { $$ = $1; }
+            | DECLARACION                   { $$ = $1; }
+            | LLAMADA PUNTOCOMA             { $$ = [$1]; }
+            | LLAMADA                       { $$ = [$1]; }
+            | RETURN                        { $$ = [$1]; }
             ;
             
-PRINT : 'print' '(' EXPRESION ')' PUNTOCOMA     {$$ = new Print($3);}
-        | 'print' '(' EXPRESION ')'             {$$ = new Print($3);}
+PRINT : 'print' '(' EXPRESION ')' PUNTOCOMA     { $$ = new Print($3); }
+        | 'print' '(' EXPRESION ')'             { $$ = new Print($3); }
+        ;
+
+LLAMADA : identificador '(' LISTA_EXPRESION ')'                     { $$ = new Llamada($1, $3, this._$.first_line, this._$.first_column); }
+        | identificador '(' ')'                                     { $$ = new Llamada($1, [], this._$.first_line, this._$.first_column); }
+        ;
+
+LISTA_EXPRESION : LISTA_EXPRESION ',' EXPRESION     { 
+                                                        $$ = $1;
+                                                        $$.push($3);
+                                                    }
+        | EXPRESION                                 { $$ = [$1]; }
+        ;
+
+RETURN : 'return' EXPRESION PUNTOCOMA               { $$ = new Return($2); }
+        | 'return' EXPRESION                        { $$ = new Return($2); }
         ;
         
-
 //--------------------------------------------------------------------------------------------------------------//
 //-------------------------------------------------EXPRESIONES-------------------------------------------------//
 //--------------------------------------------------------------------------------------------------------------//

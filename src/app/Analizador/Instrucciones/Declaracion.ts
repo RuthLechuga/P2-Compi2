@@ -74,10 +74,7 @@ export class Declaracion extends Node {
             }
         }
 
-        // Si pasa por todas las validaciones, entonces se puede agregar a la ts
-        let nuevo = new Simbolo(this.tipo, this.identificador, this.posicion);
-        nuevo.setPosicion(this.fila,this.columna);
-        nuevo.isConst = this.isConst;
+        let nuevo = new Simbolo(this.tipo, this.identificador, this.posicion, this.fila, this.columna, this.isConst);
         tabla.setVariable(nuevo);
     }
 
@@ -101,7 +98,6 @@ export class Declaracion extends Node {
                 codigo += `stack[${temp2}] = ${temp};\n`;
             }
 
-            tabla.QuitarTemporal(tabla.getTemporalActual());
         } else {
             let temp = tabla.getTemporal();
             if (['integer', 'boolean','char','double'].includes(this.tipo.toString())) {

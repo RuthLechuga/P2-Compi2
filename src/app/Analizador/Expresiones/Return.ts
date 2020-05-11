@@ -11,11 +11,7 @@ export class Return extends Node {
     }
 
     analizar(tabla: Tabla, arbol: Arbol): any {
-        const result = this.valor.analizar(tabla, arbol);
-        if (result instanceof Error) {
-            return result;
-        }
-        this.tipo = result;
+        this.tipo  = this.valor.analizar(tabla, arbol);
         return this.tipo;
     }
 
@@ -23,9 +19,8 @@ export class Return extends Node {
         let codigo = '';
         codigo += this.valor.getC3D(tabla, arbol);
         const etiqueta = tabla.getEtiqueta();
-        codigo += `stack[P] = ${tabla.getTemporalActual()}\n`
-        tabla.QuitarTemporal(tabla.getTemporalActual());
-        codigo += `goto ${etiqueta}\n`;
+        codigo += `stack[P] = ${tabla.getTemporalActual()};\n`
+        codigo += `goto ${etiqueta};\n`;
         tabla.listaReturn.push(etiqueta);
         return codigo;
     }

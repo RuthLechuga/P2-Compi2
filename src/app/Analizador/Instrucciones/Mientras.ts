@@ -40,7 +40,6 @@ export class Mientras extends Node{
 
         codigo += `if(${temp} == 1) goto ${etiqueta1}\n`
         codigo += `goto ${etiqueta2}\n`
-        tabla.QuitarTemporal(temp);
         codigo += `${etiqueta1}:`
         this.instrucciones.map(m => {
             codigo += m.getC3D(tabla, arbol);

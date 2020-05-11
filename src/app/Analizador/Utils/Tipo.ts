@@ -18,6 +18,7 @@ export class Tipo {
         this.tipo = tipo;
         this.dimensiones = dimensiones;
         this.tipoExplicito = this.toString();
+        this.tipoObjeto = '';
     }
 
     setTipoObjeto(tipoObjeto: string){

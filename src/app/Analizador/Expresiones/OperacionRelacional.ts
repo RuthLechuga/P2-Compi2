@@ -54,8 +54,6 @@ export class OperacionRelacional extends Node {
         c3d += `${etiquetaF}: \n`;
 
         tabla.AgregarTemporal(temp);
-        tabla.QuitarTemporal(temporalIzq);
-        tabla.QuitarTemporal(temporalDer);
         return c3d;
     }
 

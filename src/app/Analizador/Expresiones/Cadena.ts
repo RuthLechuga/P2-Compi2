@@ -26,7 +26,6 @@ export class Cadena extends Node{
         codigo += `${temporal1} = ${temporal};\n`;
         tabla.AgregarTemporal(temporal1);
         codigo += `${temporal} = ${temporal} + 1;\n`
-        tabla.QuitarTemporal(temporal);
         for (let i = 0; i < this.cadena.length; i++) {
             console.log(this.cadena[i].charCodeAt(0));
             codigo += `heap[${temporal}] = ${this.cadena[i].charCodeAt(0)};\n`

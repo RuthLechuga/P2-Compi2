@@ -61,8 +61,6 @@ export class Arreglo extends Node {
 
         codigo += `${label2}:\n`
         codigo += `if(${temp3} >= ${temp2}) goto ${label};\n`
-        tabla.QuitarTemporal(temp3);
-        tabla.QuitarTemporal(temp2);
         codigo += `heap[h] = ${defaultValue};\n` // Asignamos valor por defecto
         codigo += `H = H + 1;\n` // aumentamos el puntero h
         codigo += `${temp3} = ${temp3} + 1;\n`
@@ -70,7 +68,6 @@ export class Arreglo extends Node {
         codigo += `${label}:\n`
 
         codigo += `${tabla.getTemporal()} = ${temp1};\n`;
-        tabla.QuitarTemporal(temp1);
         return codigo;
     }
 

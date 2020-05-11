@@ -97,15 +97,57 @@ export class Tabla {
             this.tempStorage.push(temp);
         }
     }
-
-    QuitarTemporal(temp: String): void {
-        let index = this.tempStorage.indexOf(temp);
-        if (index > -1) {
-            this.tempStorage.splice(index, 1);
-        }
-    }
-
+    
     getTotalTemporales(): number {
         return this.temporal;
+    }
+
+    getFuncionesNativas(): string{
+
+        let c3d = '';
+
+        c3d += this.potencia();
+
+        return c3d;
+    }
+
+    potencia(): string{
+        let c3d = '';
+
+        c3d = '\nproc POTENCIA201602975_integer_integer begin\n';
+        let t1 = this.getTemporal();
+        let a = this.getTemporal();
+        let t2 = this.getTemporal();
+        let b = this.getTemporal();
+        let cont = this.getTemporal();
+        let acumulador = this.getTemporal();
+        let etc = this.getEtiqueta();
+        let ets = this.getEtiqueta();
+
+        c3d += `${t1} = P;\n`;
+        c3d += `${t1} = ${t1}+1;\n`;
+        c3d += `${a} = stack[${t1}];\n`;
+        
+        c3d += `${t2} = P;\n`;
+        c3d += `${t2} = ${t2}+2;\n`;
+        c3d += `${b} = stack[${t2}];\n`;
+        
+        c3d += `${cont} = 1;\n`;
+        c3d += `${acumulador} = ${a};\n`;
+
+        c3d += `${etc}:\n`;
+        
+        c3d += `if(${cont}==${b}) goto ${ets};\n`;
+        
+        c3d += `${acumulador} = ${acumulador} * ${a};\n`;
+        c3d += `${cont} = ${cont} + 1;\n`;
+        c3d += `goto ${etc};\n\n`;
+
+        c3d += `${ets}:\n`
+        
+        c3d += `stack[P] = ${acumulador};\n`
+
+        c3d += 'end\n\n';
+        return c3d;
     }
 }

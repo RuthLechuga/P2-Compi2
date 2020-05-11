@@ -40,7 +40,6 @@ export class HacerMientras extends Node {
         codigo += this.condicion.getC3D(tabla, arbol);
         let temp = tabla.getTemporalActual();
         codigo += `if(${temp} == 1) goto ${etiqueta}\n`
-        tabla.QuitarTemporal(temp);
         return codigo;
     }
 

@@ -4,9 +4,11 @@ import { Tabla } from "../TablaSimbolos/Tabla";
 import { Error } from "../Excepcion/Error";
 
 export class Llamada extends Node {
+
     identificador: String;
     lista_expresiones: Array<Node>;
     nombre_funcion: String;
+
     constructor(identificador: String, lista_expresiones: Array<Node>, fila: number, columna: number) {
         super(null, fila, columna);
         this.identificador = identificador;
@@ -28,19 +30,17 @@ export class Llamada extends Node {
             arbol.errores.push(excepcion);
             return excepcion;
         }
+        
         this.tipo = existeFuncion.tipo;
         return this.tipo;
     }
 
     getC3D(tabla: Tabla, arbol: Arbol) : String{
         let codigo = '';
-
-        // Calculando parametros
+        
         const listParam: Array<String> = [];
         this.lista_expresiones.map((m, n) => {
-            codigo += `// Calculo parametro ${n} func:${this.nombre_funcion}\n`
             codigo += m.getC3D(tabla, arbol);
-            codigo += `// Fin calculo parametro ${n} func:${this.nombre_funcion}\n`
             listParam.push(tabla.getTemporalActual());
             tabla.AgregarTemporal(tabla.getTemporalActual());
         });
@@ -48,13 +48,10 @@ export class Llamada extends Node {
         codigo += `P = P + ${tabla.sizeActual[tabla.sizeActual.length - 1]};\n`;
 
         let temp = tabla.getTemporal();
-        // GUARDANDO TEMPORALES
-        codigo += `// GUARDANDO TEMP\n`
         tabla.tempStorage.map((m, n) => {
             codigo += `${temp} = P + ${n};\n`;
             codigo += `stack[${temp}] = ${m};\n`;
         });
-        codigo += `// FIN GUARDANDO TEMP\n`
 
         codigo += `P = P + ${tabla.tempStorage.length};\n`;
 
@@ -66,17 +63,15 @@ export class Llamada extends Node {
 
         codigo += `call ${this.nombre_funcion};\n`;
         let temp2 = tabla.getTemporal();
-        codigo += `${temp2} = stack[P];\n`; // obteniendo valor retornado
+        codigo += `${temp2} = stack[P];\n`;
 
         codigo += `P = P - ${tabla.tempStorage.length};\n`;
 
         // RECUPERANDO TEMPORALES
-        codigo += `// recuperando TEMP\n`
         tabla.tempStorage.map((m, n) => {
             codigo += `${temp} = P + ${n};\n`
             codigo += `${m} = stack[${temp}];\n`;
         });
-        codigo += `// fin recuperando TEMP\n`
         codigo += `P = P - ${tabla.sizeActual[tabla.sizeActual.length - 1]};\n`;
 
         return codigo;

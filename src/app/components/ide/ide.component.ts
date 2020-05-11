@@ -121,6 +121,7 @@ export class IDEComponent implements OnInit {
     entrada = entrada.replace(new RegExp('&#34;','g'),'\"');
     entrada = entrada.replace(new RegExp('<br>','g'),' ');
     entrada = entrada.replace(new RegExp('<span>','g'),' ');
+    entrada = entrada.replace(new RegExp('</span>','g'),' ');
     entrada = entrada.replace(new RegExp('&gt;','g'),'>');
     entrada = entrada.replace(new RegExp('&#160;','g'),'');
 
@@ -133,7 +134,7 @@ export class IDEComponent implements OnInit {
     if (arbol.errores.length === 0) {
         const tabla = new Tabla();
         tabla.sizeActual.push(0);
-        // Obteniendo funciones
+        
         console.log(arbol.instrucciones);
         arbol.instrucciones.map(m => {
             if (m instanceof Funcion) {
@@ -154,30 +155,23 @@ export class IDEComponent implements OnInit {
             m.analizar(tabla, arbol);
         });
 
-        let c3d = '';
         if (arbol.errores.length == 0) {
-            for (let i = 0; i < cantidadGlobales; i++) {
-                c3d += `heap[${i}] = 0;\n`;
-                c3d += `h = h + 1;\n`
-            }
+          let c3d= '';
+          c3d += tabla.getFuncionesNativas();
+          arbol.instrucciones.map(m => {
+            c3d += m.getC3D(tabla, arbol);
+          });
 
-            arbol.instrucciones.map(m => {
-                c3d += m.getC3D(tabla, arbol);
-            });
+          c3d = this.getEncabezado(tabla, arbol, cantidadGlobales, c3d);
+          
+          let tc3d = c3d.replace(new RegExp('\n','g'),'<div></div>');
+          this.tabs.push({nombre: 'Pestaña #'+this.contTabs, entrada: tc3d})
+          this.contTabs++;
+  
+          console.log("Funciones\n",tabla.funciones);
+          this.tablaSimbolos = tabla;
+          this.variables = this.tablaSimbolos.variables;
         }
-
-        c3d = this.getEncabezado(tabla,c3d);
-
-        let tc3d = c3d.replace(new RegExp('\n','g'),'<div></div>');
-        this.tabs.push({nombre: 'Pestaña #'+this.contTabs, entrada: tc3d})
-        this.contTabs++;
-
-        console.log("CODIGO 3D\n",c3d);
-        console.log("Variables\n",tabla.variables);
-        console.log("Funciones\n",tabla.funciones);
-        console.log("Errores\n",arbol.errores);
-        this.tablaSimbolos = tabla;
-        this.variables = this.tablaSimbolos.variables;
         this.errores = arbol.errores;
 
     } else {
@@ -186,8 +180,7 @@ export class IDEComponent implements OnInit {
 
   }
 
-  getEncabezado(tabla: Tabla, c3d: string): string{
-
+  getEncabezado(tabla: Tabla, arbol: Arbol, cantidadGlobales: number, c3d: string): string{
     let total = tabla.getTotalTemporales();
 
     let encabezado = "var ";
@@ -211,6 +204,10 @@ export class IDEComponent implements OnInit {
 
     c3d = c3d+"\n"+et+":\n";
 
+    for (let i = 0; i < cantidadGlobales; i++) {
+        c3d += `heap[${i}] = 0;\n`;
+        c3d += `h = h + 1;\n`
+    }
     return c3d;
   }
 

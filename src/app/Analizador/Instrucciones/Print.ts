@@ -33,17 +33,14 @@ export class Print extends Node{
  
         if (this.tipo.toString() === 'integer' || this.tipo.toString() == 'boolean') {
             codigo += `print(\"%i\", ${temp});\n`;
-            tabla.QuitarTemporal(temp);
         } 
         
         else if(this.tipo.toString() == 'char'){
             codigo += `print(\"%c\", ${temp});\n`;
-            tabla.QuitarTemporal(temp);
         }
 
         else if(this.tipo.toString() == 'double'){
             codigo += `print(\"%d\", ${temp});\n`;
-            tabla.QuitarTemporal(temp);
         }
 
         else{
@@ -54,29 +51,21 @@ export class Print extends Node{
             let label2 = tabla.getEtiqueta();
             codigo += `${temp1} = ${estructura}[${temp}];\n`
             tabla.AgregarTemporal(temp1);
-            tabla.QuitarTemporal(temp);
 
             codigo += `${temp2} = ${temp} + 1;\n`
             tabla.AgregarTemporal(temp2);
-            tabla.QuitarTemporal(temp1);
 
             codigo += `${temp3} = 0;\n`
             tabla.AgregarTemporal(temp3);
 
             codigo += `${label2}:\n`
             codigo += `if(${temp3} >= ${temp1}) goto ${label};\n`
-            tabla.QuitarTemporal(temp3);
-            tabla.QuitarTemporal(temp1);
-
 
             let temp4 = tabla.getTemporal();
             codigo += `${temp4} = ${estructura}[${temp2}];\n`
             tabla.AgregarTemporal(temp4);
-            tabla.QuitarTemporal(temp3);
-
 
             codigo += `print(\"%c\", ${temp4});\n`
-            tabla.QuitarTemporal(temp4);
 
             codigo += `${temp2} = ${temp2} + 1;\n`
             tabla.AgregarTemporal(temp2);

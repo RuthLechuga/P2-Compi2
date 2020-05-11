@@ -3,16 +3,22 @@ import { Tabla } from "../TablaSimbolos/Tabla";
 import { Arbol } from "../TablaSimbolos/Arbol";
 import { Tipo, Types } from "../utils/Tipo";
 import { Error } from "../Excepcion/Error";
+import { Llamada } from './Llamada';
 
 export class OperacionAritmetica extends Node {
     izquierdo: Node;
     derecho: Node;
     operador: String;
+    fila: number;
+    columna: number;
+
     constructor(izquierdo: Node, derecho: Node, operador: String, fila: number, columna: number) {
         super(null, fila, columna);
         this.izquierdo = izquierdo;
         this.derecho = derecho;
         this.operador = operador;
+        this.fila = fila;
+        this.columna = columna;
     }
 
     analizar(tabla: Tabla, arbol: Arbol): any {
@@ -164,13 +170,17 @@ export class OperacionAritmetica extends Node {
             const temporal = tabla.getTemporal();
 
             c3d += `${temporal} = -1 * ${temporalIzq};\n`;
-            tabla.QuitarTemporal(temporalIzq);
             tabla.AgregarTemporal(temporal);
             return c3d;
         } 
 
         else if(this.operador === '^^'){
 
+            let temporal = new Llamada('',[this.izquierdo,this.derecho],this.fila,this.columna);
+            temporal.nombre_funcion = 'POTENCIA201602975_integer_integer'
+            c3d += temporal.getC3D(tabla,arbol);
+
+            return c3d;
         }
         
         else {
@@ -184,8 +194,6 @@ export class OperacionAritmetica extends Node {
             const temporal = tabla.getTemporal();
             c3d += `${temporal} = ${temporalIzq} ${this.operador} ${temporalDer};\n`;
             
-            tabla.QuitarTemporal(temporalIzq);
-            tabla.QuitarTemporal(temporalDer);
             tabla.AgregarTemporal(temporal);
             return c3d;
         }
