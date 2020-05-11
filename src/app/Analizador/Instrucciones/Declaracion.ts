@@ -74,7 +74,7 @@ export class Declaracion extends Node {
             }
         }
 
-        let nuevo = new Simbolo(this.tipo, this.identificador, this.posicion, this.fila, this.columna, this.isConst);
+        let nuevo = new Simbolo(this.tipo, this.identificador, this.posicion, this.fila, this.columna, this.isConst, this.isGlobal);
         tabla.setVariable(nuevo);
     }
 
@@ -87,7 +87,7 @@ export class Declaracion extends Node {
 
             codigo += valor3D;
 
-            if (!tabla.ambito) {
+            if (!tabla.ambito || this.isGlobal) {
                 codigo += `heap[${variable.posicion}] = ${tabla.getTemporalActual()};\n`;
             } else {
                 let temp = tabla.getTemporalActual();

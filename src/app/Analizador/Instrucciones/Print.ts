@@ -79,6 +79,7 @@ export class Print extends Node{
             codigo += `goto ${label2};\n`
             codigo += `${label}:\n`
         }
+        codigo += `print(\"%c\", 10);\n`;
         return codigo;
     }
 

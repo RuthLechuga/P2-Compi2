@@ -17,7 +17,7 @@ export class Asignacion extends Node{
     }
 
     analizar(tabla: Tabla, arbol: Arbol) : any{
-        // Buscar si la variable ya existe
+        
         const exists = tabla.getVariable(this.identificador);
         if (exists === null) {
             const excepcion = new Error('Semantico', `La variable ${this.identificador} no existe.`, this.fila, this.columna);
@@ -25,9 +25,14 @@ export class Asignacion extends Node{
             return excepcion;
         }
 
+        if(exists.isConst){
+            const excepcion = new Error('Semantico', `${this.identificador} es una constante y su valor no puede ser modificado.`, this.fila, this.columna);
+            arbol.errores.push(excepcion);
+            return excepcion;
+        }
+
         const tipo = this.valor.analizar(tabla, arbol);
 
-        // Verificar si el analisis del valor nos devuelve una excepcion
         if (tipo.constructor.name === 'Excepcion') {
             return tipo;
         }
@@ -44,7 +49,8 @@ export class Asignacion extends Node{
         let variable = tabla.getVariable(this.identificador);
         let valor3D = this.valor.getC3D(tabla, arbol);
         codigo += valor3D;
-        if (!tabla.ambito) {
+        
+        if (!tabla.ambito || variable.isGlobal) {
             codigo += `heap[${variable.posicion}] = ${tabla.getTemporalActual()};\n`;
         } else {
             let temp = tabla.getTemporalActual();

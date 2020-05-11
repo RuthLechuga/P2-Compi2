@@ -208,7 +208,7 @@ TIPO : 'integer'            { $$ = new Tipo(Types.INTEGER); }
                             }
         ;
 
-ID_LISTA : identificador ',' ID_LISTA       {   
+ID_LISTA : ID_LISTA ',' identificador       {   
                                                 $$ = $1; 
                                                 $$.push($3);
                                             }
@@ -229,6 +229,7 @@ INSTRUCCION : PRINT                         { $$ = [$1]; }
             | LLAMADA PUNTOCOMA             { $$ = [$1]; }
             | LLAMADA                       { $$ = [$1]; }
             | RETURN                        { $$ = [$1]; }
+            | ASIGNACION                    { $$ = [$1]; }
             ;
             
 PRINT : 'print' '(' EXPRESION ')' PUNTOCOMA     { $$ = new Print($3); }
@@ -249,7 +250,13 @@ LISTA_EXPRESION : LISTA_EXPRESION ',' EXPRESION     {
 RETURN : 'return' EXPRESION PUNTOCOMA               { $$ = new Return($2); }
         | 'return' EXPRESION                        { $$ = new Return($2); }
         ;
-        
+
+ASIGNACION : identificador '=' EXPRESION PUNTOCOMA                      { $$ = new Asignacion($1, $3, this._$.first_line, this._$.first_column); }
+        | identificador '=' EXPRESION                                   { $$ = new Asignacion($1, $3, this._$.first_line, this._$.first_column); }
+        | identificador '[' EXPRESION ']' '=' EXPRESION PUNTOCOMA       {}
+        | identificador '[' EXPRESION ']' '=' EXPRESION                 {}
+        ;
+
 //--------------------------------------------------------------------------------------------------------------//
 //-------------------------------------------------EXPRESIONES-------------------------------------------------//
 //--------------------------------------------------------------------------------------------------------------//

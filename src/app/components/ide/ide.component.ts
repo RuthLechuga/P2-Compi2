@@ -169,6 +169,7 @@ export class IDEComponent implements OnInit {
           this.contTabs++;
   
           console.log("Funciones\n",tabla.funciones);
+          console.log("Variables\n",tabla.variables);
           this.tablaSimbolos = tabla;
           this.variables = this.tablaSimbolos.variables;
         }

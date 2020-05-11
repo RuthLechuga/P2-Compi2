@@ -7,13 +7,15 @@ export class Simbolo {
     linea: number;
     columna: number;
     isConst: boolean;
-    
-    constructor(tipo: Tipo, identificador: String, posicion: number, linea: number, columna: number, isConst: boolean) {
+    isGlobal: boolean;
+                
+    constructor(tipo: Tipo, identificador: String, posicion: number, linea: number, columna: number, isConst: boolean, isGlobal: boolean) {
         this.tipo = tipo;
         this.identificador = identificador;
         this.posicion = posicion;
-        this.linea = this.linea;
-        this.columna = this.columna;
-        this.isConst = this.isConst;
+        this.linea = linea;
+        this.columna = columna;
+        this.isConst = isConst;
+        this.isGlobal = isGlobal;
     }
 }
