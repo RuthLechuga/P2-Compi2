@@ -22,28 +22,26 @@
                 <label class="custom-file-label" for="customFile" style="background-color:#08088A; color: blanchedalmond;">Abrir</label>
                 <input #file type="file" class="custom-file-input" id="customFile" (change)="abrir(file.files)">
               </div>
-              <a ngbDropdownItem href="#" (click)="addTab()">Nueva pestaña</a>
-              <a ngbDropdownItem href="#" (click)="guardar()">Guardar</a>
-              <a ngbDropdownItem href="#" (click)="guardarComo()">Guardar Como</a>
+              <a ngbDropdownItem (click)="addTab()">Nueva pestaña</a>
+              <a ngbDropdownItem (click)="guardar()">Guardar</a>
+              <a ngbDropdownItem (click)="guardarComo()">Guardar Como</a>
             </div>
         </li>
         <li class="nav-item mr-5">
-            <a (click)="compilar()" class="nav-link" style="color: white;" href="#">Compilar<span class="sr-only">(current)</span></a>
+            <a (click)="traducir()" class="nav-link" style="color: white;">Traducir<span class="sr-only">(current)</span></a>
         </li>
+
         <li class="nav-item mr-5">
-            <a (click)="ejecutar()" class="nav-link" style="color: white;" href="#">Ejecutar<span class="sr-only">(current)</span></a>
+            <a (click)="optimizar()" class="nav-link" style="color: white;">Optimizar<span class="sr-only">(current)</span></a>
         </li>
-        <li class="nav-item mr-5">
-            <a (click)="optimizar()" class="nav-link" style="color: white;" href="#">Optimizar<span class="sr-only">(current)</span></a>
-        </li>
+
         <li class="nav-item" ngbDropdown>
             <a class="nav-link" style="cursor: pointer; color: white" ngbDropdownToggle id="navbarDropdown2" role="button">
               Reportes
             </a>
             <div ngbDropdownMenu aria-labelledby="navbarDropdown2" class="dropdown-menu dropdown-menu-right">
-              <a ngbDropdownItem href="#" (click)="reporteTS()">Tabla De Simbolos</a>
-              <a ngbDropdownItem href="#" (click)="reporteAST()">AST</a>
-              <a ngbDropdownItem href="#" (click)="reporteOptimizacion()">Optimizacion</a>
+              <a ngbDropdownItem (click)="reporteAST()">AST</a>
+              <a ngbDropdownItem (click)="reporteOptimizacion()">Optimizacion</a>
             </div>
         </li>
 
@@ -62,25 +60,59 @@
 <div [ngbNavOutlet]="nav"></div>
 <p>Linea: {{linea}}, Columna: {{columna}}</p>
 
-<ul ngbNav #nav="ngbNav" class="nav-tabs">
+<ul ngbNav #nav2="ngbNav" class="nav-tabs">
   <li ngbNavItem>
-    <a ngbNavLink>Consola</a>
+    <a ngbNavLink>Tabla De Simbolos</a>
     <ng-template ngbNavContent>
+        <table class="table">
+          <thead>
+              <tr class="table-primary">
+                  <th scope="col">#</th>
+                  <th scope="col">Linea, Columna</th>
+                  <th scope="col">Tipo</th>
+                  <th scope="col">Identificador</th>
+                  <th scope="col">Dimensiones</th>
+                  <th scope="col">Posicion</th>
+              </tr>
+          </thead>
+      
+          <tbody>
+              <tr *ngFor="let Simbolo of variables; let i=index;">
+                  <th scope="row">{{i+1}}</th>
+                  <td>{{Simbolo.linea}},{{Simbolo.columna+1}}</td>
+                  <td>{{Simbolo.tipo.tipoExplicito}}</td>
+                  <td>{{Simbolo.identificador}}</td>
+                  <td>{{Simbolo.tipo.dimensiones}}</td>
+                  <td>{{Simbolo.posicion}}</td>
+              </tr>
+          </tbody>
+        </table>
     </ng-template>
   </li>
   <li ngbNavItem>
     <a ngbNavLink>Errores</a>
     <ng-template ngbNavContent>
-    </ng-template>
-  </li>
-  <li ngbNavItem>
-    <a ngbNavLink>Heap</a>
-    <ng-template ngbNavContent>
-    </ng-template>
-  </li>
-  <li ngbNavItem>
-    <a ngbNavLink>Stack</a>
-    <ng-template ngbNavContent>
+      <table class="table">
+        <thead>
+            <tr class="table-primary">
+                <th scope="col" style="width: 5%">#</th>
+                <th scope="col" style="width: 15%">Linea, Columna</th>
+                <th scope="col" style="width: 15%">Tipo</th>
+                <th scope="col" style="width: 65%">Descripcion</th>
+            </tr>
+        </thead>
+    
+        <tbody>
+            <tr *ngFor="let error of errores; let i=index;">
+                <th scope="row">{{i+10}}</th>
+                <td>{{error.fila}},{{error.columna}}</td>
+                <td>{{error.tipo}}</td>
+                <td>{{error.descripcion}}</td>
+            </tr>
+        </tbody>
+      </table>
     </ng-template>
   </li>
 </ul>
+
+<div [ngbNavOutlet]="nav2"></div>

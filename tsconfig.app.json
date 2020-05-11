@@ -8,9 +8,35 @@
   },
   "files": [
     "src/main.ts",
-    "src/polyfills.ts"
+    "src/polyfills.ts",
+    "src/app/Analizador/Abstract/Node.ts",
+    "src/app/Analizador/Excepcion/Error.ts",
+    "src/app/Analizador/Expresiones/Arreglo.ts",
+    "src/app/Analizador/Expresiones/Cadena.ts",
+    "src/app/Analizador/Expresiones/Caracter.ts",
+    "src/app/Analizador/Expresiones/Identificador.ts",
+    "src/app/Analizador/Expresiones/Llamada.ts",
+    "src/app/Analizador/Expresiones/OperacionAritmetica.ts",
+    "src/app/Analizador/Expresiones/OperacionRelacional.ts",
+    "src/app/Analizador/Expresiones/Primitivo.ts",
+    "src/app/Analizador/Expresiones/Return.ts",
+    "src/app/Analizador/Instrucciones/Asignacion.ts",
+    "src/app/Analizador/Instrucciones/Declaracion.ts",
+    "src/app/Analizador/Instrucciones/Funcion.ts",
+    "src/app/Analizador/Instrucciones/HacerMientras.ts",
+    "src/app/Analizador/Instrucciones/Import.ts",
+    "src/app/Analizador/Instrucciones/Print.ts",
+    "src/app/Analizador/Instrucciones/Mientras.ts",
+    "src/app/Analizador/Instrucciones/Si.ts",
+    "src/app/Analizador/TablaSimbolos/Arbol.ts",
+    "src/app/Analizador/TablaSimbolos/Simbolo.ts",
+    "src/app/Analizador/TablaSimbolos/SimboloFuncion.ts",
+    "src/app/Analizador/TablaSimbolos/Tabla.ts",
+    "src/app/Analizador/Utils/Common.ts",
+    "src/app/Analizador/Utils/Tipo.ts",
+    
   ],
   "include": [
-    "src/**/*.d.ts"
+    "src/**/*.d.ts",
   ]
 }
